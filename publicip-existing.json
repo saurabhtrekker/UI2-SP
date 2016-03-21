@@ -11,9 +11,6 @@
     "publicIPAddressType": {
       "type": "string"
     },
-    "dnsPrefix": {
-      "type": "string"
-    },
     "publicIpRGName": {
       "type": "string"
     }

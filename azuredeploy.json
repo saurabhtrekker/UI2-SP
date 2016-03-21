@@ -29,12 +29,26 @@
       },
       "defaultValue": "192.168.0.0/24"
     },
+    "mgmtNicIPAddress": {
+      "type": "string",
+      "metadata": {
+        "description": "IP address of the mgmt NIC"
+      },
+      "defaultValue": "192.168.0.4"
+    },
     "untrustSubnet": {
       "type": "string",
       "metadata": {
         "description": "The address range of the Untrust subnet in the VNET"
       },
       "defaultValue": "192.168.1.0/24"
+    },
+    "untrustNicIPAddress": {
+      "type": "string",
+      "metadata": {
+        "description": "IP address of the untrust NIC"
+      },
+      "defaultValue": "192.168.1.4"
     },
     "trustSubnet": {
       "type": "string",
@@ -43,12 +57,12 @@
       },
       "defaultValue": "192.168.2.0/24"
     },
-    "mgmtNicIPAddress": {
+    "trustNicIPAddress": {
       "type": "string",
       "metadata": {
-        "description": "The IP address of the new Mgmt NIC of the PA-VM"
+        "description": "IP address of the trust NIC"
       },
-      "defaultValue": "10.0.0.4"
+      "defaultValue": "192.168.2.4"
     },
     "adminUsername": {
       "type": "string",
@@ -94,6 +108,13 @@
         "description": "Name of existing public IP resource"
       }
     },
+    "PublicIPRGName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Resource Group containing existing public IP for Sharepoint"
+      }
+    },
     "storageAccountName": {
       "type": "string",
       "metadata": {
@@ -136,7 +157,6 @@
     "mgmtSubnetRef": "[concat(variables('VnetID'),'/subnets/',variables('mgmtSubnetName'))]",
     "untrustSubnetRef": "[concat(variables('VnetID'),'/subnets/',variables('untrustSubnetName'))]",
     "trustSubnetRef": "[concat(variables('VnetID'),'/subnets/',variables('trustSubnetName'))]",
-    "publicIPAddressName": "adpublicIP",
     "publicIPAddressType": "Dynamic",
     "subnets": [
       {
@@ -202,10 +222,13 @@
             "value": "[parameters('location')]"
           },
           "publicIPAddressName": {
-            "value": "[variables('publicIPAddressName')]"
+            "value": "[parameters('publicIPAddressName')]"
           },
           "publicIPAddressType": {
             "value": "[variables('publicIPAddressType')]"
+          },
+	  "publicIpRGName" : {
+            "value": "[parameters('PublicIPRGName')]"
           }
         }
       }
@@ -263,41 +286,23 @@
           "mgmtSubnetRef": {
             "value": "[variables('mgmtSubnetRef')]"
           },
-          "adBEAddressPoolID": {
-            "value": "[variables('adBEAddressPoolID')]"
-          },
-          "adRDPNATRuleID": {
-            "value": "[variables('adRDPNATRuleID')]"
-          },
           "untrustNicName": {
             "value": "[variables('untrustNicName')]"
+          },
+          "untrustNicIPAddress": {
+            "value": "[parameters('untrustNicIPAddress')]"
           },
           "untrustSubnetRef": {
             "value": "[variables('untrustSubnetRef')]"
           },
-          "sqlBEAddressPoolID": {
-            "value": "[variables('sqlBEAddressPoolID')]"
-          },
-          "sqlRDPNATRuleID": {
-            "value": "[variables('sqlRDPNATRuleID')]"
-          },
           "trustNicName": {
             "value": "[variables('trustNicName')]"
           },
+          "trustNicIPAddress": {
+            "value": "[parameters('trustNicIPAddress')]"
+          },
           "trustSubnetRef": {
             "value": "[variables('trustSubnetRef')]"
-          },
-          "LBBE": {
-            "value": "[variables('LBBE')]"
-          },
-          "RDPNAT": {
-            "value": "[variables('RDPNAT')]"
-          },
-          "spWebNAT": {
-            "value": "[variables('spWebNAT')]"
-          },
-          "spCANAT": {
-            "value": "[variables('spCANAT')]"
           }
         }
       }

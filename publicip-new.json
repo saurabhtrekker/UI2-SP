@@ -11,9 +11,6 @@
     "publicIPAddressType": {
       "type": "string"
     },
-    "dnsPrefix": {
-      "type": "string"
-    },
     "publicIpRGName": {
       "type": "string"
     }
@@ -27,7 +24,7 @@
       "properties": {
         "publicIPAllocationMethod": "[parameters('publicIPAddressType')]",
         "dnsSettings": {
-          "domainNameLabel": "[parameters('dnsPrefix')]"
+          "domainNameLabel": "[parameters('publicIPAddressName')]"
         }
       }
     }

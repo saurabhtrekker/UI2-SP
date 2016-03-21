@@ -14,46 +14,28 @@
     "mgmtSubnetRef": {
       "type": "string"
     },
-    "adBEAddressPoolID": {
+    "untrustNicName": {
       "type": "string"
     },
-    "adRDPNATRuleID": {
-      "type": "string"
-    },
-    "sqlNicName": {
+    "untrustNicIPAddress": {
       "type": "string"
     },
     "untrustSubnetRef": {
       "type": "string"
     },
-    "sqlBEAddressPoolID": {
+    "trustNicName": {
       "type": "string"
     },
-    "sqlRDPNATRuleID": {
-      "type": "string"
-    },
-    "spNicName": {
+    "trustNicIPAddress": {
       "type": "string"
     },
     "trustSubnetRef": {
-      "type": "string"
-    },
-    "LBBE": {
-      "type": "string"
-    },
-    "RDPNAT": {
-      "type": "string"
-    },
-    "spWebNAT": {
-      "type": "string"
-    },
-    "spCANAT": {
       "type": "string"
     }
   },
   "resources": [
     {
-      "name": "[parameters('adNicName')]",
+      "name": "[parameters('mgmtNicName')]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[parameters('location')]",
       "apiVersion": "2015-06-15",
@@ -72,7 +54,7 @@
       }
     },
     {
-      "name": "[parameters('sqlNicName')]",
+      "name": "[parameters('untrustNicName')]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[parameters('location')]",
       "apiVersion": "2015-06-15",
@@ -91,7 +73,7 @@
       }
     },
     {
-      "name": "[parameters('spNicName')]",
+      "name": "[parameters('trustNicName')]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[parameters('location')]",
       "apiVersion": "2015-06-15",
