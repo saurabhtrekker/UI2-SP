@@ -15,10 +15,13 @@
             "value": "Hello!"
         },
         "publicIPAddressName": {
-            "value": "samisrapublicipe1"
+            "value": "samisrapublicipe2"
         },
         "storageAccountName": {
-            "value": "samisraspstorage1"
+            "value": "samisraspstorage2"
+        },
+        "ipAddressPrefix": {
+            "value": "192.168"
         }
     }
 }

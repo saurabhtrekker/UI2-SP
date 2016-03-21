@@ -13,14 +13,14 @@
        "metadata": {
            "description": "Your source public IP address. Added to the inbound NSG on eth0 (MGMT)"
        },
-       "defaultValue": ""
+       "defaultValue": "199.167.55.50/32"
     },
     "ipAddressPrefix": {
        "type": "string",
-       "defaultValue": "192.168",
        "metadata": {
           "description": "Default IP address space (/16) of the VNET"
-       }
+       },
+       "defaultValue": "192.168"
     },
     "virtualNetworkName": {
       "type": "string",
