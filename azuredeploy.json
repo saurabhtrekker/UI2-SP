@@ -2,13 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "sharepointFarmName": {
-      "type": "string",
-      "metadata": {
-        "description": "The name of the Sharepoint farm"
-      },
-      "defaultValue": "spfarm"
-    },
     "location": {
       "type": "string",
       "metadata": {
@@ -18,42 +11,42 @@
     "virtualNetworkName": {
       "type": "string",
       "metadata": {
-        "description": "The name of the Virtual Network to Create"
+        "description": "The name of the Virtual Network"
       },
-      "defaultValue": "spfarmVNET"
+      "defaultValue": "panwVNET"
     },
     "virtualNetworkAddressRange": {
       "type": "string",
       "metadata": {
-        "description": "The address range of the new VNET "
+        "description": "The address range of the VNET "
       },
-      "defaultValue": "10.0.0.0/16"
+      "defaultValue": "192.168.0.0/16"
     },
-    "adSubnet": {
+    "mgmtSubnet": {
       "type": "string",
       "metadata": {
-        "description": "The address range of the AD subnet created in the new VNET"
+        "description": "The address range of the Mgmt subnet in the VNET"
       },
-      "defaultValue": "10.0.0.0/24"
+      "defaultValue": "192.168.0.0/24"
     },
-    "sqlSubnet": {
+    "untrustSubnet": {
       "type": "string",
       "metadata": {
-        "description": "The address range of the SQL subnet created in the new VNET"
+        "description": "The address range of the Untrust subnet in the VNET"
       },
-      "defaultValue": "10.0.1.0/24"
+      "defaultValue": "192.168.1.0/24"
     },
-    "spSubnet": {
+    "trustSubnet": {
       "type": "string",
       "metadata": {
-        "description": "The address range of the SP subnet created in the new VNET"
+        "description": "The address range of the Trust subnet in the VNET"
       },
-      "defaultValue": "10.0.2.0/24"
+      "defaultValue": "192.168.2.0/24"
     },
-    "adNicIPAddress": {
+    "mgmtNicIPAddress": {
       "type": "string",
       "metadata": {
-        "description": "The IP address of the new AD VM"
+        "description": "The IP address of the new Mgmt NIC of the PA-VM"
       },
       "defaultValue": "10.0.0.4"
     },
@@ -69,92 +62,6 @@
         "description": "The password forthe Administrator account of the new VM and Domain"
       }
     },
-    "adVMSize": {
-      "type": "string",
-      "metadata": {
-        "description": "The size of the AD VM Created"
-      },
-      "defaultValue": "Standard_DS2"
-    },
-    "sqlVMSize": {
-      "type": "string",
-      "metadata": {
-        "description": "The size of the SQL VM Created"
-      },
-      "defaultValue": "Standard_DS2"
-    },
-    "spVMSize": {
-      "type": "string",
-      "metadata": {
-        "description": "The size of the VM Created"
-      },
-      "defaultValue": "Standard_DS3"
-    },
-    "domainName": {
-      "type": "string",
-      "metadata": {
-        "description": "The FQDN of the AD Domain created "
-      },
-      "defaultValue": "contoso.local"
-    },
-    "sqlServerServiceAccountUserName": {
-      "type": "string",
-      "metadata": {
-        "description": "The SQL Server Service account name"
-      },
-      "defaultValue": "sqlservice"
-    },
-    "sqlServerServiceAccountPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "The SQL Server Service account password"
-      }
-    },
-    "sharePointSetupUserAccountUserName": {
-      "type": "string",
-      "metadata": {
-        "description": "The Sharepoint Setup account name"
-      },
-      "defaultValue": "sp_setup"
-    },
-    "sharePointSetupUserAccountPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "The Sharepoint Setup account password"
-      }
-    },
-    "sharePointFarmAccountUserName": {
-      "type": "string",
-      "metadata": {
-        "description": "The Sharepoint Farm account name"
-      },
-      "defaultValue": "sp_farm"
-    },
-    "sharePointFarmAccountPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "The Sharepoint Farm account password"
-      }
-    },
-    "sharePointFarmPassphrasePassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "The Sharepoint Farm Passphrase"
-      }
-    },
-    "spSiteTemplateName": {
-      "type": "string",
-      "metadata": {
-        "description": "The Sharepoint Content Site Template Name"
-      },
-      "defaultValue": "STS#0"
-    },
-    "spDNSPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "The DNS Prefix for the SharePoint Public IP Address"
-      }
-    },
     "baseUrl": {
       "type": "string",
       "metadata": {
@@ -163,7 +70,7 @@
       },
       "defaultValue": "https://raw.githubusercontent.com/saurabhtrekker/UI2-SP/master"
     },
-    "spPublicIPNewOrExisting": {
+    "PublicIPNewOrExisting": {
       "type": "string",
       "defaultValue": "new",
       "allowedValues": [
@@ -174,114 +81,87 @@
         "description": "Indicates whether the Sharepoint farm's IP is new or existing"
       }
     },
-    "spPublicIPRGName": {
+    "PublicIPRGName": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Resource Group containing existing public IP for Sharepoint"
+        "description": "Resource Group containing existing public IP"
       }
     },
-    "sppublicIPAddressName": {
+    "publicIPAddressName": {
       "type": "string",
       "metadata": {
-        "description": "Name of existing public IP resource for Sharepoint"
+        "description": "Name of existing public IP resource"
       }
     },
-    "storageAccountNamePrefix": {
+    "storageAccountName": {
       "type": "string",
       "metadata": {
         "description": "Name prefix of the new storage account created to store the VMs disks"
       }
     },
+    "storageAccountNewOrExisting" : {
+       "type": "string",
+       "defaultValue" : "new",
+       "allowedValues" : [
+          "new",
+          "existing"
+       ],
+       "metadata": {
+          "Description": "Indicates whether the Storage Account is new or existing"
+       }
+    },
     "storageAccountType": {
       "type": "string",
       "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_RAGRS",
         "Premium_LRS"
       ],
       "metadata": {
         "description": "The type of the Storage Account created"
       },
-      "defaultValue": "Premium_LRS"
+      "defaultValue": "Standard_LRS"
     }
   },
   "variables": {
-    "configDatabaseName": "SP_Config",
-    "administrationContentDatabaseName": "SP_AdminContent",
-    "contentDatabaseName": "spARM_Content",
-    "adVMName": "[concat(parameters('sharepointFarmName'),'-ad')]",
-    "sqlVMName": "[concat(parameters('sharepointFarmName'),'-sql')]",
-    "spVMName": "[concat(parameters('sharepointFarmName'),'-sp')]",
-    "LBFE": "LBFE",
-    "LBBE": "LBBE",
-    "RDPNAT": "RDP",
-    "spWebNAT": "spWeb",
-    "spCANAT": "spCentralAdmin",
-    "adSubnetName": "adSubnet",
-    "sqlSubnetName": "sqlSubnet",
-    "spSubnetName": "spSubnet",
-    "adNicName": "adNic",
-    "sqlNicName": "sqlNic",
-    "spNicName": "spNic",
+    "mgmtSubnetName": "Mgmt",
+    "untrustSubnetName": "Untrust",
+    "trustSubnetName": "Trust",
+    "mgmtNicName": "fweth0",
+    "untrustNicName": "fweth1",
+    "trustNicName": "fweth2",
     "VnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
-    "adSubnetRef": "[concat(variables('VnetID'),'/subnets/',variables('adSubnetName'))]",
-    "sqlSubnetRef": "[concat(variables('VnetID'),'/subnets/',variables('sqlSubnetName'))]",
-    "spSubnetRef": "[concat(variables('VnetID'),'/subnets/',variables('spSubnetName'))]",
-    "adNicId": "[resourceId('Microsoft.Network/networkInterfaces',variables('adNicName'))]",
-    "sqlNicId": "[resourceId('Microsoft.Network/networkInterfaces',variables('sqlNicName'))]",
-    "spNicId": "[resourceId('Microsoft.Network/networkInterfaces',variables('spNicName'))]",
-    "adLBName": "adLoadBalancer",
-    "sqlLBName": "sqlLoadBalancer",
-    "spLBName": "spLoadBalancer",
-    "adIPConfigID": "[concat(variables('adNicId'),'/ipConfigurations/ipconfig1')]",
-    "adlbID": "[resourceId('Microsoft.Network/loadBalancers',variables('adLBName'))]",
-    "adlbFEConfigID": "[concat(variables('adlbID'),'/frontendIPConfigurations/',variables('LBFE'))]",
-    "adRDPNATRuleID": "[concat(variables('adlbID'),'/inboundNatRules/',variables('RDPNAT'))]",
-    "adBEAddressPoolID": "[concat(variables('adlbID'),'/backendAddressPools/',variables('LBBE'))]",
-    "sqlIPConfigID": "[concat(variables('sqlNicId'),'/ipConfigurations/ipconfig1')]",
-    "sqllbID": "[resourceId('Microsoft.Network/loadBalancers',variables('sqlLBName'))]",
-    "sqllbFEConfigID": "[concat(variables('sqllbID'),'/frontendIPConfigurations/',variables('LBFE'))]",
-    "sqlRDPNATRuleID": "[concat(variables('sqllbID'),'/inboundNatRules/',variables('RDPNAT'))]",
-    "sqlBEAddressPoolID": "[concat(variables('sqllbID'),'/backendAddressPools/',variables('LBBE'))]",
-    "spIPConfigID": "[concat(variables('spNicId'),'/ipConfigurations/ipconfig1')]",
-    "adDataDisk": "ADDataDisk",
-    "adDataDiskSize": 1000,
-    "sqlDataDisk": "SQLDataDisk",
-    "sqlDataDiskSize": 1000,
-    "sqlLogDisk": "SQLLogDisk",
-    "sqlLogDiskSize": 1000,
-    "spDataDisk": "SPDataDisk",
-    "spDataDiskSize": 1000,
-    "adpublicIPAddressName": "adpublicIP",
-    "sqlpublicIPAddressName": "sqlpublicIP",
-    "spCentralAdminPort": 8080,
-    "spAvailabilitySetName": "spAvailabiltySet",
-    "sqlAvailabilitySetName": "sqlAvailabiltySet",
-    "adAvailabilitySetName": "adAvailabiltySet",
+    "mgmtSubnetRef": "[concat(variables('VnetID'),'/subnets/',variables('mgmtSubnetName'))]",
+    "untrustSubnetRef": "[concat(variables('VnetID'),'/subnets/',variables('untrustSubnetName'))]",
+    "trustSubnetRef": "[concat(variables('VnetID'),'/subnets/',variables('trustSubnetName'))]",
+    "publicIPAddressName": "adpublicIP",
     "publicIPAddressType": "Dynamic",
     "subnets": [
       {
-        "name": "[variables('adSubnetName')]",
+        "name": "[variables('mgmtSubnetName')]",
         "properties": {
-          "addressPrefix": "[parameters('adSubnet')]"
+          "addressPrefix": "[parameters('mgmtSubnet')]"
         }
       },
       {
-        "name": "[variables('sqlSubnetName')]",
+        "name": "[variables('untrustSubnetName')]",
         "properties": {
-          "addressPrefix": "[parameters('sqlSubnet')]"
+          "addressPrefix": "[parameters('untrustSubnet')]"
         }
       },
       {
-        "name": "[variables('spSubnetName')]",
+        "name": "[variables('trustSubnetName')]",
         "properties": {
-          "addressPrefix": "[parameters('spSubnet')]"
+          "addressPrefix": "[parameters('trustSubnet')]"
         }
       }
     ],
-    "storageAccountSetupURL": "[concat(parameters('baseUrl'),'/storageAccount.json')]",
-    "creatingPublicIPsUrl": "[concat(parameters('baseUrl'),'/creatingPublicIPs.json')]",
+    "storageAccountSetupURL" : "[concat(parameters('baseUrl'),'/storageAccount-',parameters('storageAccountNewOrExisting'),'.json')]",
+    "SettingUpPublicIPUrl": "[concat(parameters('baseUrl'),'/publicip-',parameters('PublicIPNewOrExisting'),'.json')]",
     "vnetSetupURL": "[concat(parameters('baseUrl'),'/vnet-new.json')]",
-    "creatingNICSUrl": "[concat(parameters('baseUrl'),'/creatingNICS.json')]"
+    "setupNICsURL": "[concat(parameters('baseUrl'),'/setupNICS.json')]"
   },
   "resources": [
     {
@@ -301,8 +181,8 @@
           "storageAccountType": {
             "value": "[parameters('storageAccountType')]"
           },
-          "storageAccountNamePrefix": {
-            "value": "[parameters('storageAccountNamePrefix')]"
+          "storageAccountName": {
+            "value": "[parameters('storageAccountName')]"
           }
         }
       }
@@ -314,18 +194,15 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('creatingPublicIPsUrl')]",
+          "uri": "[variables('SettingUpPublicIPUrl')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
           "location": {
             "value": "[parameters('location')]"
           },
-          "adpublicIPAddressName": {
-            "value": "[variables('adpublicIPAddressName')]"
-          },
-          "sqlpublicIPAddressName": {
-            "value": "[variables('sqlpublicIPAddressName')]"
+          "publicIPAddressName": {
+            "value": "[variables('publicIPAddressName')]"
           },
           "publicIPAddressType": {
             "value": "[variables('publicIPAddressType')]"
@@ -360,7 +237,7 @@
       }
     },
     {
-      "name": "CreatingNetworkInterfaces",
+      "name": "SetupNetworkInterfaces",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
@@ -370,21 +247,21 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('creatingNICSUrl')]",
+          "uri": "[variables('setupNICsURL')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
           "location": {
             "value": "[parameters('location')]"
           },
-          "adNicName": {
-            "value": "[variables('adNicName')]"
+          "mgmtNicName": {
+            "value": "[variables('mgmtNicName')]"
           },
-          "adNicIPAddress": {
-            "value": "[parameters('adNicIPAddress')]"
+          "mgmtNicIPAddress": {
+            "value": "[parameters('mgmtNicIPAddress')]"
           },
-          "adSubnetRef": {
-            "value": "[variables('adSubnetRef')]"
+          "mgmtSubnetRef": {
+            "value": "[variables('mgmtSubnetRef')]"
           },
           "adBEAddressPoolID": {
             "value": "[variables('adBEAddressPoolID')]"
@@ -392,11 +269,11 @@
           "adRDPNATRuleID": {
             "value": "[variables('adRDPNATRuleID')]"
           },
-          "sqlNicName": {
-            "value": "[variables('sqlNicName')]"
+          "untrustNicName": {
+            "value": "[variables('untrustNicName')]"
           },
-          "sqlSubnetRef": {
-            "value": "[variables('sqlSubnetRef')]"
+          "untrustSubnetRef": {
+            "value": "[variables('untrustSubnetRef')]"
           },
           "sqlBEAddressPoolID": {
             "value": "[variables('sqlBEAddressPoolID')]"
@@ -404,11 +281,11 @@
           "sqlRDPNATRuleID": {
             "value": "[variables('sqlRDPNATRuleID')]"
           },
-          "spNicName": {
-            "value": "[variables('spNicName')]"
+          "trustNicName": {
+            "value": "[variables('trustNicName')]"
           },
-          "spSubnetRef": {
-            "value": "[variables('spSubnetRef')]"
+          "trustSubnetRef": {
+            "value": "[variables('trustSubnetRef')]"
           },
           "LBBE": {
             "value": "[variables('LBBE')]"
