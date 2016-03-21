@@ -41,7 +41,7 @@
      {
         "apiVersion": "[variables('apiVersion')]",
         "type": "Microsoft.Compute/virtualMachines",
-        "name": "[variables('vmName')]",
+        "name": "[parameters('vmName')]",
         "location": "[parameters('location')]",
         "plan": {
            "name": "[parameters('imageSku')]",
@@ -53,7 +53,7 @@
                 "vmSize": "[parameters('vmSize')]"
             },
             "osProfile": {
-                "computerName": "[variables('vmName')]",
+                "computerName": "[parameters('vmName')]",
                 "adminUsername": "[parameters('adminUsername')]",
                 "adminPassword": "[parameters('adminPassword')]"
             },
