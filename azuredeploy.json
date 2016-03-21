@@ -8,6 +8,20 @@
         "description": "The region to deploy the resources into"
       }
     },
+    "srcIPInboundNSG": {
+       "type": "string",
+       "metadata": {
+           "description": "Your source public IP address. Added to the inbound NSG on eth0 (MGMT)"
+       },
+       "defaultValue": ""
+    },
+    "ipAddressPrefix": {
+       "type": "string",
+       "defaultValue": "192.168",
+       "metadata": {
+          "description": "Default IP address space (/16) of the VNET"
+       }
+    },
     "virtualNetworkName": {
       "type": "string",
       "metadata": {
@@ -147,6 +161,7 @@
     }
   },
   "variables": {
+    "nsgName" : "DefaultNSG",
     "mgmtSubnetName": "Mgmt",
     "untrustSubnetName": "Untrust",
     "trustSubnetName": "Trust",
@@ -179,6 +194,7 @@
       }
     ],
     "storageAccountSetupURL" : "[concat(parameters('baseUrl'),'/storageAccount-',parameters('storageAccountNewOrExisting'),'.json')]",
+    "nsgSetupURL" : "[concat(parameters('baseUrl'),'/nsg-new.json')]",
     "SettingUpPublicIPUrl": "[concat(parameters('baseUrl'),'/publicip-',parameters('PublicIPNewOrExisting'),'.json')]",
     "vnetSetupURL": "[concat(parameters('baseUrl'),'/vnet-new.json')]",
     "setupNICsURL": "[concat(parameters('baseUrl'),'/setupNICS.json')]"
@@ -234,9 +250,38 @@
       }
     },
     {
+      "name": "[variables('nsgName')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('nsgSetupURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "nsgName": {
+            "value": "[variables('nsgName')]"
+          },
+          "srcIPInboundNSG": {
+            "value": "[parameters('srcIPInboundNSG')]"
+          },
+          "ipAddressPrefix": {
+            "value": "[parameters('ipAddressPrefix')]"
+          }
+        }
+      }
+    },
+    {
       "name": "SettingUpVirtualNetwork",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[concat('Microsoft.Resources/deployments/', variables('nsgName'))]"
+      ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -246,6 +291,9 @@
         "parameters": {
           "location": {
             "value": "[parameters('location')]"
+          },
+          "nsgName": {
+            "value": "[variables('nsgName')]"
           },
           "virtualNetworkName": {
             "value": "[parameters('virtualNetworkName')]"

@@ -5,6 +5,9 @@
     "location": {
       "type": "string"
     },
+    "nsgName": {
+      "type": "string"
+    },
     "virtualNetworkName": {
       "type": "string"
     },
