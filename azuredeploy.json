@@ -22,6 +22,13 @@
        },
        "defaultValue": "192.168"
     },
+    "vmName": {
+       "type": "string",
+       "metadata": {
+          "description": "Name of VM-Series VM in the Azure portal"
+       },
+       "defaultValue": "panw-fw-vm"
+    },
     "virtualNetworkName": {
       "type": "string",
       "metadata": {
@@ -161,6 +168,8 @@
     }
   },
   "variables": {
+    "imageSku" : "byol",
+    "imageOffer" : "vmseries-preview",
     "nsgName" : "DefaultNSG",
     "mgmtSubnetName": "Mgmt",
     "untrustSubnetName": "Untrust",
@@ -177,7 +186,10 @@
       {
         "name": "[variables('mgmtSubnetName')]",
         "properties": {
-          "addressPrefix": "[parameters('mgmtSubnet')]"
+          "addressPrefix": "[parameters('mgmtSubnet')]",
+          "networkSecurityGroup": {
+              "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+          }
         }
       },
       {
@@ -351,6 +363,57 @@
           },
           "trustSubnetRef": {
             "value": "[variables('trustSubnetRef')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "PAN-VM",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/SettingUpStorageAccount",
+        "Microsoft.Resources/deployments/SettingUpPublicIPs",
+        "[concat('Microsoft.Resources/deployments/', variables('nsgName'))]",
+        "Microsoft.Resources/deployments/SettingUpVirtualNetwork",
+        "Microsoft.Resources/deployments/SetupNetworkInterfaces"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('vnetSetupURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "vmName": {
+            "value": "[parameters('vmName')]"
+          },
+          "imageSku": {
+            "value": "[variables('imageSku')]"
+          },
+          "imageOffer": {
+            "value": "[variables('imageOffer')]"
+          },
+          "storageAccountName": {
+            "value": "[parameters('storageAccountName')]"
+          },
+          "mgmtNicName": {
+            "value": "[variables('mgmtNicName')]"
+          },
+          "untrustNicName": {
+            "value": "[variables('untrustNicName')]"
+          },
+          "trustNicName": {
+            "value": "[variables('trustNicName')]"
           }
         }
       }
