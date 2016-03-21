@@ -29,6 +29,17 @@
        },
        "defaultValue": "panw-fw-vm"
     },
+    "vmSize": {
+       "type": "string",
+       "allowedValues": [
+          "Standard_D3",
+          "Standard_D4"
+       ],
+       "metadata": {
+          "description": "Azure VM size for VM-Series"
+       },
+       "defaultValue": "Standard_D3"
+    },
     "virtualNetworkName": {
       "type": "string",
       "metadata": {
@@ -207,6 +218,7 @@
     ],
     "storageAccountSetupURL" : "[concat(parameters('baseUrl'),'/storageAccount-',parameters('storageAccountNewOrExisting'),'.json')]",
     "nsgSetupURL" : "[concat(parameters('baseUrl'),'/nsg-new.json')]",
+    "panvmUrl" : "[concat(parameters('baseUrl'),'/pan-vm.json')]",
     "SettingUpPublicIPUrl": "[concat(parameters('baseUrl'),'/publicip-',parameters('PublicIPNewOrExisting'),'.json')]",
     "vnetSetupURL": "[concat(parameters('baseUrl'),'/vnet-new.json')]",
     "setupNICsURL": "[concat(parameters('baseUrl'),'/setupNICS.json')]"
@@ -381,7 +393,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('vnetSetupURL')]",
+          "uri": "[variables('panvmUrl')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -396,6 +408,9 @@
           },
           "vmName": {
             "value": "[parameters('vmName')]"
+          },
+          "vmSize": {
+            "value": "[parameters('vmSize')]"
           },
           "imageSku": {
             "value": "[variables('imageSku')]"
