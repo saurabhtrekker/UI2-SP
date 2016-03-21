@@ -25,10 +25,10 @@
     },
     "mgmtNicName": {
       "type": "string"
-    }
+    },
     "untrustNicName": {
       "type": "string"
-    }
+    },
     "trustNicName": {
       "type": "string"
     }
