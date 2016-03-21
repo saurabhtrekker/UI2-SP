@@ -14,6 +14,9 @@
     "vmName": {
       "type": "string"
     },
+    "vmSize": {
+      "type": "string"
+    },
     "imageSku": {
       "type": "string"
     },
