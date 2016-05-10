@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
-            "value": "West US"
+            "value": "East US"
         },
         "storageAccountType": {
             "value": "Standard_LRS"
@@ -15,16 +15,16 @@
             "value": "Hello!"
         },
         "publicIPAddressName": {
-            "value": "samisrapublicipe3"
+            "value": "samisrapublicipesau5"
         },
         "storageAccountName": {
-            "value": "samisraspstorage3"
+            "value": "samisraspstoragesau5"
         },
         "ipAddressPrefix": {
             "value": "192.168"
         },
         "vmName": {
-            "value": "panw-pa-vm-3"
+            "value": "panw-pa-vm-sau5"
         }
     }
 }

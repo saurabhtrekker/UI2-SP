@@ -16,9 +16,13 @@
     },
     "subnets": {
       "type": "array"
+    },
+    "virtualNetworkExistingRGName": {
+      "type": "string"
     }
   },
   "variables" : {
+      "vnetID": "[resourceId(parameters('virtualNetworkExistingRGName'),concat('Microsoft.Network','/','virtualNetworks'),parameters('virtualNetworkName'))]"
   },
   "resources": [],
   "outputs": {

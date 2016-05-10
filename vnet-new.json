@@ -16,6 +16,9 @@
     },
     "subnets": {
       "type": "array"
+    },
+    "virtualNetworkExistingRGName": {
+      "type": "string"
     }
   },
   "resources": [
