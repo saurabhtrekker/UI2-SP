@@ -15,16 +15,16 @@
             "value": "Hello!"
         },
         "publicIPAddressName": {
-            "value": "samisrapublicipesau5"
+            "value": "samisrapublicipesau6"
         },
         "storageAccountName": {
-            "value": "samisraspstoragesau5"
+            "value": "samisraspstoragesau6"
         },
         "ipAddressPrefix": {
             "value": "192.168"
         },
         "vmName": {
-            "value": "panw-pa-vm-sau5"
+            "value": "panw-pa-vm-sau6"
         }
     }
 }

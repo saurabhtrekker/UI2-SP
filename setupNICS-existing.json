@@ -5,6 +5,9 @@
     "location": {
       "type": "string"
     },
+    "nicName": {
+      "type": "string"
+    },
     "subnet0Name": {
       "type": "string"
     },
@@ -38,7 +41,7 @@
   },
   "resources": [
     {
-      "name": "[parameters('subnet0Name')]",
+      "name": "[concat(variables('nicName'), '0')]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[parameters('location')]",
       "apiVersion": "2015-06-15",
@@ -57,7 +60,7 @@
       }
     },
     {
-      "name": "[parameters('subnet1Name')]",
+      "name": "[concat(variables('nicName'), '1')]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[parameters('location')]",
       "apiVersion": "2015-06-15",
@@ -76,7 +79,7 @@
       }
     },
     {
-      "name": "[parameters('subnet2Name')]",
+      "name": "[concat(variables('nicName'), '2')]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[parameters('location')]",
       "apiVersion": "2015-06-15",
