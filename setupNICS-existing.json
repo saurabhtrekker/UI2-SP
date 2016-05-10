@@ -41,7 +41,7 @@
   },
   "resources": [
     {
-      "name": "[concat(variables('nicName'), '0')]",
+      "name": "[concat(parameters('nicName'), '0')]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[parameters('location')]",
       "apiVersion": "2015-06-15",
@@ -60,7 +60,7 @@
       }
     },
     {
-      "name": "[concat(variables('nicName'), '1')]",
+      "name": "[concat(parameters('nicName'), '1')]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[parameters('location')]",
       "apiVersion": "2015-06-15",
@@ -79,7 +79,7 @@
       }
     },
     {
-      "name": "[concat(variables('nicName'), '2')]",
+      "name": "[concat(parameters('nicName'), '2')]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[parameters('location')]",
       "apiVersion": "2015-06-15",
