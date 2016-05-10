@@ -11,7 +11,7 @@
     "virtualNetworkName": {
       "type": "string"
     },
-    "virtualNetworkAddressRange": {
+    "virtualNetworkAddressPrefix": {
       "type": "string"
     },
     "subnets": {
